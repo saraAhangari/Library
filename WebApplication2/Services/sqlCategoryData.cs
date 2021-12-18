@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApplication2.Models;
+using WebApplication2.Utils;
 
 namespace WebApplication2.Services
 {
-    public class sqlCategoryData
+    public class sqlCategoryData : ICategoryData
     {
         private BookContext _categoryContext;
 
@@ -18,7 +19,7 @@ namespace WebApplication2.Services
             return _categoryContext.BookCategory.ToList();
         }
 
-        public BookCategory AddBook(BookCategory category)
+        public BookCategory AddCategory(BookCategory category)
         {
             _categoryContext.BookCategory.Add(category);
             _categoryContext.SaveChanges();

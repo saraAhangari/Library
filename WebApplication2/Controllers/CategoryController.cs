@@ -23,7 +23,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddBook(BookCategory category)
+        public IActionResult AddCategory(BookCategory category)
         {
             _categoryData.AddCategory(category);
 
