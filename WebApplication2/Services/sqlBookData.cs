@@ -11,16 +11,22 @@ namespace WebApplication2.Utils
         {
             this._bookContext = bookContext;
         }
-        public Book AddBook(Book book)
+        public void AddBook(Book book)
         {
             _bookContext.Books.Add(book);
             _bookContext.SaveChanges();
-            return book;
         }
 
         public void DeleteBook(Book book)
         {
             _bookContext.Books.Remove(book);
+            foreach (Author author in _bookContext.Authors)
+            {
+                if (author == book.author)
+                {
+                    _bookContext.Authors.Remove(author);
+                }
+            }
             _bookContext.SaveChanges();
         }
 
@@ -36,7 +42,7 @@ namespace WebApplication2.Utils
 
         public List<Book> GetBookByPublisher(string publisher)
         {
-            return _bookContext.Books.Where(b => b.Publisher.Name == publisher).ToList();
+            return _bookContext.Books.Where(b => b.Publisher == publisher).ToList();
         }
 
         public Book GetBookByTitle(string title)

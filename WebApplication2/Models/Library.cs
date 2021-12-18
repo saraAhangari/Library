@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication2.Models
 {
-    public class Author
+    public class Library
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public AuthorContact AuthorContact { get; set; } // one - to - one
 
+        public IList<Book> book { get; set; }
     }
 }

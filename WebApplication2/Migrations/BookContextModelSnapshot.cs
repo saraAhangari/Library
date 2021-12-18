@@ -19,19 +19,19 @@ namespace WebApplication2.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("AuthorBook", b =>
+            modelBuilder.Entity("BookLibrary", b =>
                 {
-                    b.Property<int>("authorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("bookId")
                         .HasColumnType("int");
 
-                    b.HasKey("authorId", "bookId");
+                    b.Property<int>("libraryId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("bookId");
+                    b.HasKey("bookId", "libraryId");
 
-                    b.ToTable("AuthorBook");
+                    b.HasIndex("libraryId");
+
+                    b.ToTable("BookLibrary");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Author", b =>
@@ -44,12 +44,17 @@ namespace WebApplication2.Migrations
                     b.Property<int?>("AuthorContactId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("BookId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorContactId");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("Authors");
                 });
@@ -79,65 +84,43 @@ namespace WebApplication2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PublisherId")
-                        .HasColumnType("int");
+                    b.Property<string>("Publisher")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
-                    b.HasIndex("PublisherId");
-
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("WebApplication2.Models.BookCategory", b =>
+            modelBuilder.Entity("WebApplication2.Models.Library", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("BookCategory");
+                    b.ToTable("Library");
                 });
 
-            modelBuilder.Entity("WebApplication2.Models.Publisher", b =>
+            modelBuilder.Entity("BookLibrary", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Publishers");
-                });
-
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.HasOne("WebApplication2.Models.Author", null)
-                        .WithMany()
-                        .HasForeignKey("authorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("WebApplication2.Models.Book", null)
                         .WithMany()
                         .HasForeignKey("bookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication2.Models.Library", null)
+                        .WithMany()
+                        .HasForeignKey("libraryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -148,27 +131,16 @@ namespace WebApplication2.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorContactId");
 
+                    b.HasOne("WebApplication2.Models.Book", null)
+                        .WithMany("author")
+                        .HasForeignKey("BookId");
+
                     b.Navigation("AuthorContact");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Book", b =>
                 {
-                    b.HasOne("WebApplication2.Models.BookCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
-
-                    b.HasOne("WebApplication2.Models.Publisher", "Publisher")
-                        .WithMany("Books")
-                        .HasForeignKey("PublisherId");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("WebApplication2.Models.Publisher", b =>
-                {
-                    b.Navigation("Books");
+                    b.Navigation("author");
                 });
 #pragma warning restore 612, 618
         }

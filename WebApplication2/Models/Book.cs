@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication2.Models
@@ -10,7 +11,8 @@ namespace WebApplication2.Models
         public string title { get; set; }
         public string Category { get; set; }
         public string Publisher { get; set; }
-        public IList<Author> author { get; set; }
+        public IList<Author> author { get; set; } // one - to - many
+        public IList<Library> library { get; set; } // many - to - many
 
     }
 }
