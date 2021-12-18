@@ -31,5 +31,12 @@ namespace WebApplication2.Utils
         {
             return _authorContext.Books.Where(b => b.author == authorName).ToList();
         }
+
+        public Author AddAuthor(Author author)
+        {
+            _authorContext.Authors.Add(author);
+            _authorContext.SaveChanges();
+            return author;
+        }
     }
 }
