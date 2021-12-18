@@ -11,13 +11,13 @@ namespace WebApplication2.Models
         public string title { get; set; }
         public string author { get; set; }
 
-        public virtual BookCategory Category { get; set; }
-        public virtual Publisher Publisher { get; set; }
-        public virtual ICollection<BookAuthors> BookAuthors { get; set; }
+        public BookCategory Category { get; set; }
+        public Publisher Publisher { get; set; }
+        public ICollection<Author> Authors { get; set; }
 
-        public Book()
-        {
-            BookAuthors = new HashSet<BookAuthors>();
-        }
+        //public Book()
+        //{
+        //    BookAuthors = new HashSet<BookAuthors>();
+        //}
     }
 }

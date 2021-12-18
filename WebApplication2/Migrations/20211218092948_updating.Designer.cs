@@ -3,36 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication2.Models;
 
 namespace WebApplication2.Migrations
 {
     [DbContext(typeof(BookContext))]
-    partial class BookContextModelSnapshot : ModelSnapshot
+    [Migration("20211218092948_updating")]
+    partial class updating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.Property<int>("AuthorsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("booksid")
-                        .HasColumnType("int");
-
-                    b.HasKey("AuthorsId", "booksid");
-
-                    b.HasIndex("booksid");
-
-                    b.ToTable("AuthorBook");
-                });
 
             modelBuilder.Entity("WebApplication2.Models.Author", b =>
                 {
@@ -103,6 +90,29 @@ namespace WebApplication2.Migrations
                     b.ToTable("Books");
                 });
 
+            modelBuilder.Entity("WebApplication2.Models.BookAuthors", b =>
+                {
+                    b.Property<string>("BookId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("AuthorId1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Bookid")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookId");
+
+                    b.HasIndex("AuthorId1");
+
+                    b.HasIndex("Bookid");
+
+                    b.ToTable("BookAuthors");
+                });
+
             modelBuilder.Entity("WebApplication2.Models.BookCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -133,21 +143,6 @@ namespace WebApplication2.Migrations
                     b.ToTable("Publishers");
                 });
 
-            modelBuilder.Entity("AuthorBook", b =>
-                {
-                    b.HasOne("WebApplication2.Models.Author", null)
-                        .WithMany()
-                        .HasForeignKey("AuthorsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApplication2.Models.Book", null)
-                        .WithMany()
-                        .HasForeignKey("booksid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("WebApplication2.Models.Author", b =>
                 {
                     b.HasOne("WebApplication2.Models.AuthorContact", "AuthorContact")
@@ -170,6 +165,31 @@ namespace WebApplication2.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.BookAuthors", b =>
+                {
+                    b.HasOne("WebApplication2.Models.Author", "Author")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("AuthorId1");
+
+                    b.HasOne("WebApplication2.Models.Book", "Book")
+                        .WithMany("BookAuthors")
+                        .HasForeignKey("Bookid");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Author", b =>
+                {
+                    b.Navigation("BookAuthors");
+                });
+
+            modelBuilder.Entity("WebApplication2.Models.Book", b =>
+                {
+                    b.Navigation("BookAuthors");
                 });
 
             modelBuilder.Entity("WebApplication2.Models.Publisher", b =>
