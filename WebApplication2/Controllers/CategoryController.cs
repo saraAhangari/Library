@@ -8,7 +8,6 @@ namespace WebApplication2.Controllers
     [Route("[controller]")]
     public class CategoryController : Controller
 
-
     {
         private ICategoryData _categoryData;
 
