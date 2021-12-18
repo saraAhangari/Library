@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Linq;
-using WebApplication2.bookData;
 using WebApplication2.Models;
 using WebApplication2.Utils;
 
@@ -30,7 +29,6 @@ namespace WebApplication2
             services.AddScoped<IbookData, sqlBookData>(); //scoped => Dependency Injection
             // Swagger service properties
             services.AddSwaggerGen(c =>
-
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
                 c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
