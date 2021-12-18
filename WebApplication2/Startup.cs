@@ -24,9 +24,12 @@ namespace WebApplication2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContextPool<BookContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Library")));
+            services.AddDbContextPool<BookContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("Library")));
 
             services.AddScoped<IbookData, sqlBookData>(); //scoped => Dependency Injection
+            services.AddScoped<IAuthorData, sqlAuthorData>();
+
             // Swagger service properties
             services.AddSwaggerGen(c =>
             {

@@ -1,4 +1,6 @@
-﻿namespace WebApplication2.Models
+﻿using System.Collections.Generic;
+
+namespace WebApplication2.Models
 {
     public class Publisher
     {
