@@ -8,7 +8,6 @@ namespace WebApplication2.Utils
         List<Author> GetAuthors();
         Author GetAuthor(int id);
         Author GetAuthorByName(string name);
-        List<Book> GetBooks(string authorName);
-        Author AddAuthor(Author author);
+        List<Book> GetBooks(Author author);
     }
 }

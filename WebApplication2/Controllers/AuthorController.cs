@@ -48,7 +48,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet("{id:int}/authorBooks")]
-        public IActionResult GetBooks(string authorName)
+        public IActionResult GetBooks(Author authorName)
         {
             var author = _authorData.GetBooks(authorName);
             if (author != null)
@@ -56,15 +56,6 @@ namespace WebApplication2.Controllers
                 return Ok(author);
             }
             return NotFound($"The author with name {author} does not have any books here !");
-        }
-
-        [HttpPost]
-        public IActionResult AddAuthor(Author author)
-        {
-            _authorData.AddAuthor(author);
-
-            return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + author.Id, author);
         }
     }
 }

@@ -8,7 +8,7 @@ namespace WebApplication2.Utils
         List<Book> GetBooks();
         Book GetBook(int id);
         Book GetBookByTitle(string title);
-        List<Book> GetBookByAuthor(string author);
+        List<Book> GetBookByAuthor(Author author);
         List<Book> GetBookByPublisher(string publisher);
         Book AddBook(Book book);
         Book UpdateBook(Book book);

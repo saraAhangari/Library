@@ -48,7 +48,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpGet("{author}/getbyauthor")]
-        public IActionResult GetBookByAuthor(string author)
+        public IActionResult GetBookByAuthor(Author author)
         {
             var book = _bookData.GetBookByAuthor(author);
 
@@ -77,7 +77,7 @@ namespace WebApplication2.Controllers
             _bookData.AddBook(book);
 
             return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + book.id, book);
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + book.Id, book);
         }
 
         [HttpDelete("{id:int}")]
@@ -99,7 +99,7 @@ namespace WebApplication2.Controllers
             var currentBook = _bookData.GetBook(id);
             if (currentBook != null)
             {
-                book.id = currentBook.id;
+                book.Id = currentBook.Id;
                 _bookData.UpdateBook(book);
             }
             return Ok(book);

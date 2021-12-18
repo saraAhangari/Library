@@ -26,10 +26,10 @@ namespace WebApplication2.Utils
 
         public Book GetBook(int id)
         {
-            return _bookContext.Books.SingleOrDefault(b => b.id == id);
+            return _bookContext.Books.SingleOrDefault(b => b.Id == id);
         }
 
-        public List<Book> GetBookByAuthor(string author)
+        public List<Book> GetBookByAuthor(Author author)
         {
             return _bookContext.Books.Where(b => b.author == author).ToList();
         }
@@ -51,7 +51,7 @@ namespace WebApplication2.Utils
 
         public Book UpdateBook(Book book)
         {
-            var currentBook = _bookContext.Books.Find(book.id);
+            var currentBook = _bookContext.Books.Find(book.Id);
             if (currentBook != null)
             {
                 currentBook.title = book.title;
