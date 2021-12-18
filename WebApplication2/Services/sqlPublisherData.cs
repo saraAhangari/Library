@@ -22,7 +22,7 @@ namespace WebApplication2.Services
         }
         public List<Book> GetPublisherBooks(Publisher publisher)
         {
-            return _publisherContext.Books.Where(b => b.publisher == publisher.Name).ToList();
+            return _publisherContext.Books.Where(b => b.Publisher == publisher).ToList();
         }
     }
 }

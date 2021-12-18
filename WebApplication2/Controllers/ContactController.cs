@@ -28,13 +28,16 @@ namespace WebApplication2.Controllers
             return NotFound($"The file of author with id {id} was not found !");
         }
 
-        [HttpPost]
-        public IActionResult AddDetails(AuthorContact contact)
+        [HttpPatch("{id:int}")]
+        public IActionResult UpdateDetails(AuthorContact contact, int id)
         {
-            _contactdata.AddDetails(contact);
-
-            return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + contact.Id, contact);
+            var currentDetails = _contactdata.GetAuthorContact(id);
+            if (currentDetails != null)
+            {
+                contact.Id = currentDetails.Id;
+                _contactdata.UpdateDetails(contact);
+            }
+            return Ok(contact);
         }
     }
 }

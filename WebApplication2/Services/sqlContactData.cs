@@ -16,10 +16,16 @@ namespace WebApplication2.Utils
             return _contactContext.AuthorContact.SingleOrDefault(c => c.Id == id);
         }
 
-        public AuthorContact AddDetails(AuthorContact contact)
+        public AuthorContact UpdateDetails(AuthorContact contact)
         {
-            _contactContext.AuthorContact.Add(contact);
-            _contactContext.SaveChanges();
+            var currentDetails = _contactContext.AuthorContact.Find(contact.Id);
+            if (currentDetails != null)
+            {
+                currentDetails.Address = contact.Address;
+                currentDetails.ContactNumber = contact.ContactNumber;
+                _contactContext.AuthorContact.Update(currentDetails);
+                _contactContext.SaveChanges();
+            }
             return contact;
         }
     }

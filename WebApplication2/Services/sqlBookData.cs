@@ -36,7 +36,7 @@ namespace WebApplication2.Utils
 
         public List<Book> GetBookByPublisher(string publisher)
         {
-            return _bookContext.Books.Where(b => b.publisher == publisher).ToList();
+            return _bookContext.Books.Where(b => b.Publisher.Name == publisher).ToList();
         }
 
         public Book GetBookByTitle(string title)
@@ -56,7 +56,7 @@ namespace WebApplication2.Utils
             {
                 currentBook.title = book.title;
                 currentBook.author = book.author;
-                currentBook.publisher = book.publisher;
+                currentBook.Publisher = book.Publisher;
                 _bookContext.Books.Update(currentBook);
                 _bookContext.SaveChanges();
             }
