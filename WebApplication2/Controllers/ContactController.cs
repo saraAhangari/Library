@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication2.Models;
 using WebApplication2.Utils;
 
 namespace WebApplication2.Controllers
@@ -25,6 +26,15 @@ namespace WebApplication2.Controllers
             }
 
             return NotFound($"The file of author with id {id} was not found !");
+        }
+
+        [HttpPost]
+        public IActionResult AddDetails(AuthorContact contact)
+        {
+            _contactdata.AddDetails(contact);
+
+            return Created(HttpContext.Request.Scheme + "://" +
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + contact.Id, contact);
         }
     }
 }

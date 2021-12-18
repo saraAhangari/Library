@@ -15,6 +15,13 @@ namespace WebApplication2.Utils
         {
             return _contactContext.AuthorContact.SingleOrDefault(c => c.Id == id);
         }
+
+        public AuthorContact AddDetails(AuthorContact contact)
+        {
+            _contactContext.AuthorContact.Add(contact);
+            _contactContext.SaveChanges();
+            return contact;
+        }
     }
 
 }
