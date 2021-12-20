@@ -27,9 +27,9 @@ namespace WebApplication2.Utils
             return _authorContext.Authors.ToList();
         }
 
-        public List<Book> GetBooks(Author author)
-        {
-            return _authorContext.Books.Where(b => b.author == author).ToList();
-        }
+        //public List<Book> GetBooks(Author author)
+        //{
+        //    return _authorContext.Books.Where(b => b.author == author).ToList();
+        //}
     }
 }

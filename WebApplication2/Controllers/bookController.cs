@@ -8,7 +8,7 @@ namespace WebApplication2.Controllers
     [Route("[controller]")]
     public class bookController : ControllerBase
     {
-        private IbookData _bookData;
+        private IbookData _bookData;  
 
         public bookController(IbookData bookData)
         {
@@ -51,34 +51,35 @@ namespace WebApplication2.Controllers
         [HttpGet("{author}/getbyauthor")]
         public IActionResult GetBookByAuthor(Author author)
         {
-            var book = _bookData.GetBookByAuthor(author);
+            //var book = _bookData.GetBookByAuthor(author);
 
-            if (book != null)
-            {
-                return Ok(book);
-            }
+            //if (book != null)
+            //{
+            //    return Ok(book);
+            //}
 
-            return NotFound($"The book with author: {author} was not found !");
+            //return NotFound($"The book with author: {author} was not found !");
+            return BadRequest();
         }
 
         [HttpGet("{publisher}/getbypublisher")]
-        public IActionResult GetBookByPublisher(string publisher)
+        public IActionResult GetBookByPublisher(Publisher publisher)
         {
-            var book = _bookData.GetBookByPublisher(publisher);
+            ////var book = _bookData.GetBookByPublisher(publisher);
 
-            if (book != null)
-                return Ok(book);
+            //if (book != null)
+            //    return Ok(book);
 
-            return NotFound($"The book with publisher: {publisher} was not found !");
+            //return NotFound($"The book with publisher: {publisher} was not found !");
+            return BadRequest();
         }
 
         [HttpPost]
-        public IActionResult AddBook(Book book)
+        public IActionResult AddBook(BookDTO dto)
         {
-            _bookData.AddBook(book);
-
+           _bookData.AddBook(dto);
             return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + book.Id, book);
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.Id, dto);
         }
 
         [HttpDelete("{id:int}")]

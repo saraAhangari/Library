@@ -11,22 +11,47 @@ namespace WebApplication2.Utils
         {
             this._bookContext = bookContext;
         }
-        public void AddBook(Book book)
+        public void AddBook(BookDTO dto)
         {
-            _bookContext.Books.Add(book);
+            //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE PUBLISHERID
+            //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE author
+
+            Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
+
+            var book = new List<Book>
+            {
+                new Book()
+                {
+                    Id = dto.Id,
+                    title = dto.title,
+                    Category = dto.Category,
+                    publisher = publisher
+                }
+            };
+            _bookContext.Publishers.AddRange(publisher);
+            _bookContext.Books.AddRange(book);
+
+            List<Author> authors = new List<Author>();
+            foreach (AuthorDTO authordto in dto.authors)
+            {
+                Author author = new Author();
+                author.setName(authordto.getName());
+                _bookContext.Authors.Add(author);
+            }
+
             _bookContext.SaveChanges();
         }
 
         public void DeleteBook(Book book)
         {
             _bookContext.Books.Remove(book);
-            foreach (Author author in _bookContext.Authors)
-            {
-                if (author == book.author)
-                {
-                    _bookContext.Authors.Remove(author);
-                }
-            }
+            //foreach (Author author in _bookContext.Authors)
+            //{
+            //    if (author == book.author)
+            //    {
+            //        _bookContext.Authors.Remove(author);
+            //    }
+            //}
             _bookContext.SaveChanges();
         }
 
@@ -35,15 +60,15 @@ namespace WebApplication2.Utils
             return _bookContext.Books.SingleOrDefault(b => b.Id == id);
         }
 
-        public List<Book> GetBookByAuthor(Author author)
-        {
-            return _bookContext.Books.Where(b => b.author == author).ToList();
-        }
+        //public List<Book> GetBookByAuthor(Author author)
+        //{
+        //    return _bookContext.Books.Where(b => b.author == author).ToList();
+        //}
 
-        public List<Book> GetBookByPublisher(string publisher)
-        {
-            return _bookContext.Books.Where(b => b.Publisher == publisher).ToList();
-        }
+        //public List<Book> GetBookByPublisher(Publisher publisher)
+        //{
+        //    return _bookContext.Books.Where(b => b.Publisher == publisher).ToList();
+        //}
 
         public Book GetBookByTitle(string title)
         {
@@ -61,8 +86,8 @@ namespace WebApplication2.Utils
             if (currentBook != null)
             {
                 currentBook.title = book.title;
-                currentBook.author = book.author;
-                currentBook.Publisher = book.Publisher;
+                //currentBook.author = book.author;
+                //currentBook.Publisher = book.Publisher;
                 _bookContext.Books.Update(currentBook);
                 _bookContext.SaveChanges();
             }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication2.Models
 {
@@ -10,9 +11,18 @@ namespace WebApplication2.Models
         public int Id { get; set; }
         public string title { get; set; }
         public string Category { get; set; }
-        public string Publisher { get; set; }
-        public IList<Author> author { get; set; } // one - to - many
-        public IList<Library> library { get; set; } // many - to - many
+        public Publisher publisher { get; set; } // one to many
+        public ICollection<Author> authorsList { get; set; } // many - to - many
+
+        public void setAuthors(IList<Author> author)
+        {
+            this.authorsList = author;
+        }
+
+        public void setPublisher(Publisher publisher)
+        {
+            this.publisher = publisher;
+        }
 
     }
 }
