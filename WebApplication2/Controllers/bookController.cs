@@ -95,9 +95,9 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPatch("{id:int}")]
-        public IActionResult UpdateBook(Book book, int id)
+        public IActionResult UpdateDetails(BookUpdateDTO book)
         {
-            var currentBook = _bookData.GetBook(id);
+            var currentBook = _bookData.GetBook(book.Id);
             if (currentBook != null)
             {
                 book.Id = currentBook.Id;

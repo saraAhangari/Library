@@ -32,7 +32,31 @@ namespace WebApplication2.Utils
             _bookContext.Books.Add(book);
             _bookContext.SaveChanges();
         }
-      
+
+        public Book UpdateBook(BookUpdateDTO book)
+        {
+            var currentBook = _bookContext.Books.Find(book.Id);
+            if (currentBook != null)
+            {
+                currentBook.title = book.title;
+
+                Publisher publisher = new Publisher();
+                publisher.Name = book.publisher.Name;
+                currentBook.publisher.Add(publisher);
+
+                foreach (var author in book.authors)
+                {
+                    Author bookauthor = new Author();
+                    bookauthor.Firstname = author.Firstname;
+                    bookauthor.Lastname= author.Lastname;
+                    bookauthor.AuthorContact= author.details;
+                    currentBook.authors.Add(bookauthor);
+                }
+                _bookContext.Books.Update(currentBook);
+                _bookContext.SaveChanges();
+            }
+            return currentBook;
+        }
 
         public void DeleteBook(Book book)
         {
@@ -65,18 +89,6 @@ namespace WebApplication2.Utils
             return _bookContext.Books.ToList();
         }
 
-        public Book UpdateBook(Book book)
-        {
-            var currentBook = _bookContext.Books.Find(book.Id);
-            if (currentBook != null)
-            {
-                currentBook.title = book.title;
-                //currentBook.author = book.author;
-                //currentBook.Publisher = book.Publisher;
-                _bookContext.Books.Update(currentBook);
-                _bookContext.SaveChanges();
-            }
-            return book;
-        }
+        
     }
 }
