@@ -24,10 +24,9 @@ namespace WebApplication2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<LibraryContext>
-                (options => options.UseSqlServer(Configuration.GetConnectionString("Library")));
+            services.AddDbContext<LibraryContext>();
 
-            services.AddScoped<IbookData, sqlBookData>(); //scoped => Dependency Injection
+            services.AddScoped<IBookData, sqlBookData>(); //scoped => Dependency Injection
             services.AddScoped<IAuthorData, sqlAuthorData>();
             services.AddScoped<IContactData, sqlContactData>();
 

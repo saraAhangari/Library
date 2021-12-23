@@ -4,7 +4,7 @@ using WebApplication2.ModelsDTO;
 
 namespace WebApplication2.Utils
 {
-    public interface IbookData
+    public interface IBookData
     {
         List<Book> GetBooks();
         Book GetBook(int id);

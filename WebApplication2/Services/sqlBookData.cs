@@ -7,7 +7,7 @@ using WebApplication2.ModelsDTO;
 
 namespace WebApplication2.Utils
 {
-    public class sqlBookData : IbookData
+    public class sqlBookData : IBookData
     {
         private LibraryContext _bookContext;
         public sqlBookData(LibraryContext bookContext)
@@ -16,34 +16,21 @@ namespace WebApplication2.Utils
         }
         public void AddBook(BookDTO dto)
         {
-            //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE PUBLISHERID
-            //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE author
-            using (var ct = new LibraryContext()) 
+            Book book = new Book();
+            book.title = dto.title;
+
+            foreach (var author in dto.authors)
             {
-                //Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
-
-                //var book =
-                //new Book()
-                //{
-                //    Id = dto.Id,
-                //    title = dto.title,
-                //    Category = dto.Category,
-                //    publisher = publisher
-                //};
-           
-                //ct.Books.Add(book);
-                ct.SaveChanges();
+                Author bookauthor = new Author();
+                bookauthor.Firstname = author.Firstname;
+                bookauthor.Lastname = author.Lastname;
+                bookauthor.AuthorContact = author.details;
+                bookauthor.Books.Add(book);
+                book.authors.Add(bookauthor);
+                _bookContext.Authors.Add(bookauthor);
             }
-            
-
-           /* Author author = new Author(){ Name = dto.author.Name };
-
-            var loadbooks = _bookContext.Books.Include(b => b.authorsList).ToList();
-            var loadauthors = _bookContext.Authors.Include(b => b.Books).ToList();
-            _bookContext.Books.AddRange(book);
-            _bookContext.Authors.Add(author);
-            _bookContext.Publishers.Add(publisher);
-            _bookContext.SaveChanges();*/
+            _bookContext.Books.Add(book);
+            _bookContext.SaveChanges();
         }
       
 

@@ -9,9 +9,9 @@ namespace WebApplication2.Controllers
     [Route("[controller]")]
     public class bookController : ControllerBase
     {
-        private IbookData _bookData;  
+        private IBookData _bookData;  
 
-        public bookController(IbookData bookData)
+        public bookController(IBookData bookData)
         {
             this._bookData = bookData;
         }
@@ -78,7 +78,7 @@ namespace WebApplication2.Controllers
         {
            _bookData.AddBook(dto);
             return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.Id, dto);
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.title, dto);
         }
 
         [HttpDelete("{id:int}")]
