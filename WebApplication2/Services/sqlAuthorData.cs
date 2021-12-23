@@ -19,7 +19,7 @@ namespace WebApplication2.Utils
 
         public Author GetAuthorByName(string name)
         {
-            return _authorContext.Authors.SingleOrDefault(a => a.Name == name);
+            return _authorContext.Authors.SingleOrDefault(a => a.Firstname == name);
         }
 
         public List<Author> GetAuthors()

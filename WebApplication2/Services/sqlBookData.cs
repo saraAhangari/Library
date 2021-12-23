@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
 using WebApplication2.Models;
+using WebApplication2.ModelsDTO;
 
 namespace WebApplication2.Utils
 {
@@ -19,18 +20,18 @@ namespace WebApplication2.Utils
             //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE author
             using (var ct = new LibraryContext()) 
             {
-                Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
+                //Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
 
-                var book =
-                new Book()
-                {
-                    Id = dto.Id,
-                    title = dto.title,
-                    Category = dto.Category,
-                    publisher = publisher
-                };
+                //var book =
+                //new Book()
+                //{
+                //    Id = dto.Id,
+                //    title = dto.title,
+                //    Category = dto.Category,
+                //    publisher = publisher
+                //};
            
-                ct.Books.Add(book);
+                //ct.Books.Add(book);
                 ct.SaveChanges();
             }
             
@@ -57,10 +58,10 @@ namespace WebApplication2.Utils
             return _bookContext.Books.SingleOrDefault(b => b.Id == id);
         }
 
-        public List<Book> GetBookByAuthor(Author author)
-        {
-            return _bookContext.Books.Where(b => b.authorsList.Contains(author)).ToList();
-        }
+        //public List<Book> GetBookByAuthor(Author author)
+        //{
+        //    //return _bookContext.Books.Where(b => b.authorsList.Contains(author)).ToList();
+        //}
 
         public List<Book> GetBookByPublisher(Publisher publisher)
         {

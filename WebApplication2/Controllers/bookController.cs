@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Utils;
 using WebApplication2.Models;
+using WebApplication2.ModelsDTO;
 
 namespace WebApplication2.Controllers
 {
@@ -48,18 +49,18 @@ namespace WebApplication2.Controllers
             return NotFound($"The book with title: {title} was not found !");
         }
 
-        [HttpGet("{author}/getbyauthor")]
-        public IActionResult GetBookByAuthor(Author author)
-        {
-            var book = _bookData.GetBookByAuthor(author);
+        //[HttpGet("{author}/getbyauthor")]
+        //public IActionResult GetBookByAuthor(Author author)
+        //{
+        //    var book = _bookData.GetBookByAuthor(author);
 
-            if (book != null)
-            {
-                return Ok(book);
-            }
+        //    if (book != null)
+        //    {
+        //        return Ok(book);
+        //    }
 
-            return NotFound($"The book with author: {author} was not found !");
-        }
+        //    return NotFound($"The book with author: {author} was not found !");
+        //}
 
         [HttpGet("{publisher}/getbypublisher")]
         public IActionResult GetBookByPublisher(Publisher publisher)
