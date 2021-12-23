@@ -6,9 +6,9 @@ namespace WebApplication2.Models
 {
     public class Publisher
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }
-
-        public ICollection<Book> book = new List<Book>();
+        [Key]
+        public int publisherID { get; set; }
+        public string Name { get; set; }
+        public Book book { get; set; } // one to many
     }
 }

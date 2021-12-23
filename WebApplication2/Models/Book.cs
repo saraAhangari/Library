@@ -10,18 +10,14 @@ namespace WebApplication2.Models
         [Key]
         public int Id { get; set; }
         public string title { get; set; }
-        public string Category { get; set; }
-        public Publisher publisher { get; set; } // one to many
-        public ICollection<Author> authorsList { get; set; } // many - to - many
+      
+        public ICollection<Publisher> publisher { get; set; } // one to many
+        public ICollection<Author> authors { get; set; } // many to many
 
-        public void setAuthors(IList<Author> author)
+        public Book()
         {
-            this.authorsList = author;
-        }
-
-        public void setPublisher(Publisher publisher)
-        {
-            this.publisher = publisher;
+            publisher = new List<Publisher>();
+            authors = new List<Author>();
         }
 
     }

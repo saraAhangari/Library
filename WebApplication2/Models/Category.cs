@@ -2,11 +2,10 @@
 
 namespace WebApplication2.Models
 {
-    public class AuthorContact
+    public class Category
     {
         [Key]
         public int Id { get; set; }
-        public string ContactNumber { get; set; }
-        public string Address { get; set; }
+        public string Name { get; set; }
     }
 }

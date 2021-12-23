@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using System.Collections.Generic;
 using System.Linq;
 using WebApplication2.Models;
 
@@ -6,8 +8,8 @@ namespace WebApplication2.Utils
 {
     public class sqlBookData : IbookData
     {
-        private BookContext _bookContext;
-        public sqlBookData(BookContext bookContext)
+        private LibraryContext _bookContext;
+        public sqlBookData(LibraryContext bookContext)
         {
             this._bookContext = bookContext;
         }
@@ -15,43 +17,38 @@ namespace WebApplication2.Utils
         {
             //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE PUBLISHERID
             //PROBLEM => NOT BEING ABLE TO INSERT DUPLICATE author
-
-            Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
-
-            var book = new List<Book>
+            using (var ct = new LibraryContext()) 
             {
+                Publisher publisher = new Publisher() { Id = dto.Publisher.Id };
+
+                var book =
                 new Book()
                 {
                     Id = dto.Id,
                     title = dto.title,
                     Category = dto.Category,
                     publisher = publisher
-                }
-            };
-            _bookContext.Publishers.AddRange(publisher);
-            _bookContext.Books.AddRange(book);
-
-            List<Author> authors = new List<Author>();
-            foreach (AuthorDTO authordto in dto.authors)
-            {
-                Author author = new Author();
-                author.setName(authordto.getName());
-                _bookContext.Authors.Add(author);
+                };
+           
+                ct.Books.Add(book);
+                ct.SaveChanges();
             }
+            
 
-            _bookContext.SaveChanges();
+           /* Author author = new Author(){ Name = dto.author.Name };
+
+            var loadbooks = _bookContext.Books.Include(b => b.authorsList).ToList();
+            var loadauthors = _bookContext.Authors.Include(b => b.Books).ToList();
+            _bookContext.Books.AddRange(book);
+            _bookContext.Authors.Add(author);
+            _bookContext.Publishers.Add(publisher);
+            _bookContext.SaveChanges();*/
         }
+      
 
         public void DeleteBook(Book book)
         {
             _bookContext.Books.Remove(book);
-            //foreach (Author author in _bookContext.Authors)
-            //{
-            //    if (author == book.author)
-            //    {
-            //        _bookContext.Authors.Remove(author);
-            //    }
-            //}
             _bookContext.SaveChanges();
         }
 
@@ -60,15 +57,15 @@ namespace WebApplication2.Utils
             return _bookContext.Books.SingleOrDefault(b => b.Id == id);
         }
 
-        //public List<Book> GetBookByAuthor(Author author)
-        //{
-        //    return _bookContext.Books.Where(b => b.author == author).ToList();
-        //}
+        public List<Book> GetBookByAuthor(Author author)
+        {
+            return _bookContext.Books.Where(b => b.authorsList.Contains(author)).ToList();
+        }
 
-        //public List<Book> GetBookByPublisher(Publisher publisher)
-        //{
-        //    return _bookContext.Books.Where(b => b.Publisher == publisher).ToList();
-        //}
+        public List<Book> GetBookByPublisher(Publisher publisher)
+        {
+            return _bookContext.Books.Where(b => b.publisher == publisher).ToList();
+        }
 
         public Book GetBookByTitle(string title)
         {

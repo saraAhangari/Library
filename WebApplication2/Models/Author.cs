@@ -6,20 +6,18 @@ namespace WebApplication2.Models
 {
     public class Author
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
-        public AuthorContact AuthorContact { get; set; } // one - to - one
+        public string Firstname { get; set; }
+        public string Lastname { get; set; }
+
+        //one to one 
+        public AuthorDetails AuthorContact { get; set; } 
         public ICollection<Book> Books { get; set; }
 
-        public void setName(string name)            
+        public Author()
         {
-            this.Name = name;
-        }
-
-        public void setBooks(ICollection<Book> books)
-        {
-            this.Books = books;
+            Books = new List<Book>();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace WebApplication2.Controllers
         }
 
         [HttpPatch("{id:int}")]
-        public IActionResult UpdateDetails(AuthorContact contact, int id)
+        public IActionResult UpdateDetails(ContactDTO contact, int id)
         {
             var currentDetails = _contactdata.GetAuthorContact(id);
             if (currentDetails != null)
@@ -38,6 +38,14 @@ namespace WebApplication2.Controllers
                 _contactdata.UpdateDetails(contact);
             }
             return Ok(contact);
+        }
+
+        [HttpPost]
+        public IActionResult AddDetails(int id, ContactDTO contact)
+        {
+            _contactdata.AddDetails(id , contact);
+            return Created(HttpContext.Request.Scheme + "://" +
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + contact.Id, contact);
         }
     }
 }

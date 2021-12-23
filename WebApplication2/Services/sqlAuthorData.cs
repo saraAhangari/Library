@@ -6,9 +6,9 @@ namespace WebApplication2.Utils
 {
     public class sqlAuthorData : IAuthorData
     {
-        private BookContext _authorContext;
+        private LibraryContext _authorContext;
 
-        public sqlAuthorData(BookContext _authorContext)
+        public sqlAuthorData(LibraryContext _authorContext)
         {
             this._authorContext = _authorContext;
         }

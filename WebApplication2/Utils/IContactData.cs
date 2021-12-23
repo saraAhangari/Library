@@ -4,7 +4,8 @@ namespace WebApplication2.Utils
 {
     public interface IContactData
     {
-        AuthorContact GetAuthorContact(int id);
-        AuthorContact UpdateDetails(AuthorContact authorContact);
+        AuthorDetails GetAuthorContact(int id);
+        AuthorDetails UpdateDetails(ContactDTO Contactdto);
+        void AddDetails(int id, ContactDTO contact);
     }
 }
