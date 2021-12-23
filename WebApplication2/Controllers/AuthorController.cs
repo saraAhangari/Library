@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication2.Models;
+using WebApplication2.ModelsDTO;
 using WebApplication2.Utils;
 
 namespace WebApplication2.Controllers
@@ -13,6 +14,14 @@ namespace WebApplication2.Controllers
         public AuthorController(IAuthorData _authorData)
         {
             this._authorData = _authorData;
+        }
+
+        [HttpPost]
+        public IActionResult AddAuthor(AuthorDTO dto)
+        {
+            _authorData.AddAuthor(dto);
+            return Created(HttpContext.Request.Scheme + "://" +
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.Lastname, dto);
         }
 
         [HttpGet("allauthors")]

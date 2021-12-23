@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WebApplication2.Models;
+using WebApplication2.ModelsDTO;
 
 namespace WebApplication2.Utils
 {
@@ -12,6 +13,23 @@ namespace WebApplication2.Utils
         {
             this._authorContext = _authorContext;
         }
+
+        public void AddAuthor(AuthorDTO authorDTO)
+        {
+            AuthorDetails authorDetails = new AuthorDetails();
+            authorDetails = authorDTO.details;
+
+
+            Author author = new Author();
+            author.Firstname = authorDTO.Firstname;
+            author.Lastname = authorDTO.Lastname;
+            author.AuthorContact = authorDetails;
+
+
+            _authorContext.Authors.Add(author);
+            _authorContext.SaveChanges();
+        }
+
         public Author GetAuthor(int id)
         {
             return _authorContext.Authors.SingleOrDefault(a => a.Id == id);
