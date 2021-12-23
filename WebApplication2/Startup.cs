@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Linq;
 using WebApplication2.Models;
+using WebApplication2.Services;
 using WebApplication2.Utils;
 
 namespace WebApplication2
@@ -29,6 +30,7 @@ namespace WebApplication2
             services.AddScoped<IBookData, sqlBookData>(); //scoped => Dependency Injection
             services.AddScoped<IAuthorData, sqlAuthorData>();
             services.AddScoped<IContactData, sqlContactData>();
+            services.AddScoped<ICategoryData, sqlCategoryData>();
 
 
             // Swagger service properties

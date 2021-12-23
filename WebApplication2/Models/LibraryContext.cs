@@ -22,6 +22,7 @@ namespace WebApplication2.Models
         public DbSet<Book> Books { get; set; }
         public DbSet<BookDetails> BookDetails { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<Category> Category { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<AuthorDetails> AuthorContact { get; set; }
     }

@@ -8,6 +8,7 @@ namespace WebApplication2.Models
     public class Book
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public string title { get; set; }
       
