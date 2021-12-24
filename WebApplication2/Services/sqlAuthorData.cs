@@ -8,6 +8,7 @@ namespace WebApplication2.Utils
     public class sqlAuthorData : IAuthorData
     {
         private LibraryContext _authorContext;
+        bool found=false;
 
         public sqlAuthorData(LibraryContext _authorContext)
         {
@@ -25,9 +26,21 @@ namespace WebApplication2.Utils
             author.Lastname = authorDTO.Lastname;
             author.AuthorContact = authorDetails;
 
-
-            _authorContext.Authors.Add(author);
-            _authorContext.SaveChanges();
+            foreach(var author2 in _authorContext.Authors)
+            {
+                if(author2.Firstname.Equals(author.Firstname)
+                    && author2.Lastname.Equals(author.Lastname))
+                {
+                    found = true;
+                    author = author2;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                _authorContext.Authors.Add(author);
+                _authorContext.SaveChanges();
+            }
         }
 
         public Author GetAuthor(int id)

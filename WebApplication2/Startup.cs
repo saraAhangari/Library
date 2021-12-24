@@ -29,6 +29,7 @@ namespace WebApplication2
 
             services.AddScoped<IBookData, sqlBookData>(); //scoped => Dependency Injection
             services.AddScoped<IAuthorData, sqlAuthorData>();
+            services.AddScoped<IPublisherData, sqlPublisherData>();
             services.AddScoped<IContactData, sqlContactData>();
             services.AddScoped<ICategoryData, sqlCategoryData>();
             services.AddScoped<IBookDetails, BookDetailsData>();
