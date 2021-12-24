@@ -62,16 +62,16 @@ namespace WebApplication2.Controllers
         //    return NotFound($"The book with author: {author} was not found !");
         //}
 
-        [HttpGet("{publisher}/getbypublisher")]
-        public IActionResult GetBookByPublisher(Publisher publisher)
-        {
-            var book = _bookData.GetBookByPublisher(publisher);
+        //[HttpGet("{publisher}/getbypublisher")]
+        //public IActionResult GetBookByPublisher(Publisher publisher)
+        //{
+        //    var book = _bookData.GetBookByPublisher(publisher);
 
-            if (book != null)
-                return Ok(book);
+        //    if (book != null)
+        //        return Ok(book);
 
-            return NotFound($"The book with publisher: {publisher} was not found !");
-        }
+        //    return NotFound($"The book with publisher: {publisher} was not found !");
+        //}
 
         [HttpPost]
         public IActionResult AddBook(BookDTO dto)

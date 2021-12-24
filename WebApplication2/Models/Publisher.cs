@@ -9,6 +9,11 @@ namespace WebApplication2.Models
         [Key]
         public int publisherID { get; set; }
         public string Name { get; set; }
-        public Book book { get; set; } // one to many
+        public ICollection<Book> book { get; set; } // many to many
+
+        public Publisher()
+        {
+            book = new List<Book>();
+        }
     }
 }

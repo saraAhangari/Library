@@ -24,18 +24,20 @@ namespace WebApplication2.Utils
 
             Publisher publisher = new Publisher();
             publisher.Name = dto.publisher.Name;
+            publisher.book.Add(book);
             foreach(var pub in _bookContext.Publishers)
             {
                 if (pub.Name == publisher.Name)
                 {
                     foundPub = true;
+                    publisher = pub;
                     break;
                 }
             }
-            if (!foundPub)
-            {
+            if (foundPub)
                 book.publisher.Add(publisher);
-            }
+            else
+                _bookContext.Publishers.Add(publisher);
 
 
             foreach (var author in dto.authors)
@@ -73,7 +75,7 @@ namespace WebApplication2.Utils
 
                 Publisher publisher = new Publisher();
                 publisher.Name = book.publisher.Name;
-                currentBook.publisher.Add(publisher);
+                //currentBook.publisher.Add(publisher);
 
                 foreach (var author in book.authors)
                 {
@@ -105,10 +107,10 @@ namespace WebApplication2.Utils
         //    //return _bookContext.Books.Where(b => b.authorsList.Contains(author)).ToList();
         //}
 
-        public List<Book> GetBookByPublisher(Publisher publisher)
-        {
-            return _bookContext.Books.Where(b => b.publisher == publisher).ToList();
-        }
+        //public List<Book> GetBookByPublisher(Publisher publisher)
+        //{
+        //    //return _bookContext.Books.Where(b => b.publisher == publisher).ToList();
+        //}
 
         public Book GetBookByTitle(string title)
         {

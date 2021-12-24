@@ -10,7 +10,7 @@ namespace WebApplication2.Models
         public string price { get; set; }
         public int categoryID { get; set; }
         public int bookID { get; set; }
-        public int publisherID { get; set; }
+        public int publisherID { get; set; } //one to many
 
     }
 }
