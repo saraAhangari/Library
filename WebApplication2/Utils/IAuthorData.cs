@@ -9,7 +9,7 @@ namespace WebApplication2.Utils
         void AddAuthor(AuthorDTO authorDTO);
         List<Author> GetAuthors();
         Author GetAuthor(int id);
-        Author GetAuthorByName(string name);
-        //List<Book> GetBooks(Author author);
+        Author GetAuthorByName(string Lastname);
+        List<Book> GetBooks(Author author);
     }
 }

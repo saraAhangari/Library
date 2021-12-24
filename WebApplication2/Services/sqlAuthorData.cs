@@ -48,9 +48,9 @@ namespace WebApplication2.Utils
             return _authorContext.Authors.SingleOrDefault(a => a.Id == id);
         }
 
-        public Author GetAuthorByName(string name)
+        public Author GetAuthorByName(string lastname)
         {
-            return _authorContext.Authors.SingleOrDefault(a => a.Firstname == name);
+            return _authorContext.Authors.SingleOrDefault(a => a.Lastname == lastname);
         }
 
         public List<Author> GetAuthors()
@@ -58,9 +58,9 @@ namespace WebApplication2.Utils
             return _authorContext.Authors.ToList();
         }
 
-        //public List<Book> GetBooks(Author author)
-        //{
-        //    return _authorContext.Books.Where(b => b.author == author).ToList();
-        //}
+        public List<Book> GetBooks(Author author)
+        {
+            return _authorContext.Books.Where(b => b.authors.Contains(author)).ToList();    
+        }
     }
 }

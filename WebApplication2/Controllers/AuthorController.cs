@@ -59,13 +59,12 @@ namespace WebApplication2.Controllers
         [HttpGet("{id:int}/authorBooks")]
         public IActionResult GetBooks(Author authorName)
         {
-            //var author = _authorData.GetBooks(authorName);
-            //if (author != null)
-            //{
-            //    return Ok(author);
-            //}
-            //return NotFound($"The author with name {author} does not have any books here !");
-            return BadRequest();
+            var author = _authorData.GetBooks(authorName);
+            if (author != null)
+            {
+                return Ok(author);
+            }
+            return NotFound($"The author with name {author} does not have any books here !");
         }
     }
 }
