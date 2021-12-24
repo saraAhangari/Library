@@ -9,7 +9,6 @@ namespace WebApplication2.ModelsDTO
     public class BookDTO
     {
         public string title { get; set; }
-      
         public PublisherDTO publisher { get; set; } // one to many
         public ICollection<AuthorDTO> authors { get; set; } // many to many
 

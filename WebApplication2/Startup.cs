@@ -31,6 +31,7 @@ namespace WebApplication2
             services.AddScoped<IAuthorData, sqlAuthorData>();
             services.AddScoped<IContactData, sqlContactData>();
             services.AddScoped<ICategoryData, sqlCategoryData>();
+            services.AddScoped<IBookDetails, BookDetailsData>();
 
 
             // Swagger service properties

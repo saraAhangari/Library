@@ -10,6 +10,8 @@ namespace WebApplication2.Utils
     public class sqlBookData : IBookData
     {
         private LibraryContext _bookContext;
+        bool foundPub = false;
+        bool foundAuth = false;
         public sqlBookData(LibraryContext bookContext)
         {
             this._bookContext = bookContext;
@@ -19,6 +21,23 @@ namespace WebApplication2.Utils
             Book book = new Book();
             book.title = dto.title;
 
+
+            Publisher publisher = new Publisher();
+            publisher.Name = dto.publisher.Name;
+            foreach(var pub in _bookContext.Publishers)
+            {
+                if (pub.Name == publisher.Name)
+                {
+                    foundPub = true;
+                    break;
+                }
+            }
+            if (!foundPub)
+            {
+                book.publisher.Add(publisher);
+            }
+
+
             foreach (var author in dto.authors)
             {
                 Author bookauthor = new Author();
@@ -26,8 +45,20 @@ namespace WebApplication2.Utils
                 bookauthor.Lastname = author.Lastname;
                 bookauthor.AuthorContact = author.details;
                 bookauthor.Books.Add(book);
-                book.authors.Add(bookauthor);
-                _bookContext.Authors.Add(bookauthor);
+                foreach (var author2 in _bookContext.Authors)
+                {
+                    if(author2.Firstname.Equals(bookauthor.Firstname)
+                        && author2.Lastname.Equals(bookauthor.Lastname))
+                    {
+                        foundAuth = true;
+                        bookauthor = author2;
+                        break;
+                    }
+                }
+                if (foundAuth)
+                    book.authors.Add(bookauthor);  
+                else
+                    _bookContext.Authors.Add(bookauthor);
             }
             _bookContext.Books.Add(book);
             _bookContext.SaveChanges();

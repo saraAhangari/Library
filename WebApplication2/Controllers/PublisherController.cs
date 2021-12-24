@@ -1,0 +1,25 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using WebApplication2.ModelsDTO;
+using WebApplication2.Utils;
+
+namespace WebApplication2.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class PublisherController : Controller
+    {
+        private IPublisherData _pubData;
+
+        public PublisherController(IPublisherData _pubData)
+        {
+            this._pubData = _pubData;
+        }
+        [HttpPost]
+        public IActionResult AddBook(PublisherDTO dto)
+        {
+            _pubData.AddPublisher(dto);
+            return Created(HttpContext.Request.Scheme + "://" +
+                HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.Name, dto);
+        }
+    }
+}

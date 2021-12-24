@@ -6,7 +6,6 @@ namespace WebApplication2.Models
     public class BookDetails
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int fileId { get; set; }
         public string price { get; set; }
         public int categoryID { get; set; }

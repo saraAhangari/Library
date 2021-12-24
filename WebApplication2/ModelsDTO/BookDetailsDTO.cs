@@ -6,9 +6,9 @@ namespace WebApplication2.ModelsDTO
     public class BookDetailsDTO
     {
         public string price { get; set; }
-        public int categoryID { get; set; }
+        public string category { get; set; }
         public int bookID { get; set; }
-        public int publisherID { get; set; }
+        public string publisher { get; set; }
 
     }
 }
