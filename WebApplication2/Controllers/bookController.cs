@@ -48,30 +48,6 @@ namespace WebApplication2.Controllers
             return NotFound($"The book with title: {title} was not found !");
         }
 
-        //[HttpGet("{author}/getbyauthor")]
-        //public IActionResult GetBookByAuthor(Author author)
-        //{
-        //    var book = _bookData.GetBookByAuthor(author);
-
-        //    if (book != null)
-        //    {
-        //        return Ok(book);
-        //    }
-
-        //    return NotFound($"The book with author: {author} was not found !");
-        //}
-
-        //[HttpGet("{publisher}/getbypublisher")]
-        //public IActionResult GetBookByPublisher(Publisher publisher)
-        //{
-        //    var book = _bookData.GetBookByPublisher(publisher);
-
-        //    if (book != null)
-        //        return Ok(book);
-
-        //    return NotFound($"The book with publisher: {publisher} was not found !");
-        //}
-
         [HttpPost]
         public IActionResult AddBook(BookDTO dto)
         {
@@ -84,11 +60,11 @@ namespace WebApplication2.Controllers
         public IActionResult DeleteBook(int id)
         {
             var book = _bookData.GetBook(id);
-            //if (book != null)
-            //{
-            //    _bookData.DeleteBook(book);
-            //    //return Ok(book)
-            //}
+            if (book != null)
+            {
+                _bookData.DeleteBook(id);
+                //return Ok(book)
+            }
 
             return NotFound($"The book with id: {id} was not found !");
         }

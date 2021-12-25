@@ -91,8 +91,15 @@ namespace WebApplication2.Utils
             return currentBook;
         }
 
-        public void DeleteBook(Book book)
+        public void DeleteBook(int id)
         {
+            var book = _bookContext.Books.SingleOrDefault(x => x.Id == id);
+            var authors = _bookContext.Authors.Include("Books")
+                .Where(author => author.Books.Any(b => b.Id == book.Id)).ToList();
+            foreach (var a in authors)
+            {
+                a.Books.Remove(book);
+            }
             _bookContext.Books.Remove(book);
             _bookContext.SaveChanges();
         }
@@ -100,83 +107,84 @@ namespace WebApplication2.Utils
         public BookDTO GetBook(int id)
         {
             var book = _bookContext.Books.SingleOrDefault(b => b.Id == id);
-            BookDTO dTO = new BookDTO();
-            dTO.title = book.title;
 
             if (book != null)
             {
+                BookDTO dTO = new BookDTO();
+                dTO.title = book.title;
+
                 List<Publisher> publisher = _bookContext.Publishers.Where(p => p.book.Contains(book))
                                                                     .ToList();
                 List<Author> authors = _bookContext.Authors.Where(a => a.Books.Contains(book))
                                                            .ToList();
                 book.publisher = publisher;
                 book.authors = authors;
+
+                foreach (var pub in book.publisher)
+                {
+                    PublisherDTO publisherDTO = new PublisherDTO();
+                    publisherDTO.Name = pub.Name;
+                    dTO.publisher = publisherDTO;
+                }
+
+
+                foreach (var author in book.authors)
+                {
+                    AuthorDTO authorDTO = new AuthorDTO();
+                    authorDTO.Firstname = author.Firstname;
+                    authorDTO.Lastname = author.Lastname;
+                    foreach (var detail in _bookContext.AuthorContact)
+                    {
+                        if (detail.AuthorId == author.Id)
+                            authorDTO.details = detail;
+                    }
+                    dTO.authors.Add(authorDTO);
+                }
+                return dTO;
             }
-
-            foreach (var publisher in book.publisher)
-            {
-                PublisherDTO publisherDTO = new PublisherDTO();
-                publisherDTO.Name = publisher.Name;
-                dTO.publisher = publisherDTO;
-            }
-
-
-            foreach (var author in book.authors)
-            {
-                AuthorDTO authorDTO = new AuthorDTO();
-                authorDTO.Firstname = author.Firstname;
-                authorDTO.Lastname = author.Lastname;
-                authorDTO.details = author.AuthorContact; //not working why ?
-                dTO.authors.Add(authorDTO);
-            }
-
-            return dTO;
+            return null;
         }
-
-        //public List<Book> GetBookByAuthor(Author author)
-        //{
-        //    //return _bookContext.Books.Where(b => b.authorsList.Contains(author)).ToList();
-        //}
-
-        //public List<Book> GetBookByPublisher(Publisher publisher)
-        //{
-        //    //return _bookContext.Books.Where(b => b.publisher == publisher).ToList();
-        //}
 
         public BookDTO GetBookByTitle(string title)
         {
             var book = _bookContext.Books.SingleOrDefault(b => b.title == title);
-            BookDTO dTO = new BookDTO();
-            dTO.title = book.title;
+
 
             if (book != null)
             {
+                BookDTO dTO = new BookDTO();
+                dTO.title = book.title;
+
                 List<Publisher> publisher = _bookContext.Publishers.Where(p => p.book.Contains(book))
                                                                     .ToList();
                 List<Author> authors = _bookContext.Authors.Where(a => a.Books.Contains(book))
                                                            .ToList();
                 book.publisher = publisher;
                 book.authors = authors;
+                foreach (var pub in book.publisher)
+                {
+                    PublisherDTO publisherDTO = new PublisherDTO();
+                    publisherDTO.Name = pub.Name;
+                    dTO.publisher = publisherDTO;
+                }
+
+
+                foreach (var author in book.authors)
+                {
+                    AuthorDTO authorDTO = new AuthorDTO();
+                    authorDTO.Firstname = author.Firstname;
+                    authorDTO.Lastname = author.Lastname;
+                    foreach (var detail in _bookContext.AuthorContact)
+                    {
+                        if (detail.AuthorId == author.Id)
+                            authorDTO.details = detail;
+                    }
+                    dTO.authors.Add(authorDTO);
+                }
+
+                return dTO;
             }
-
-            foreach (var publisher in book.publisher)
-            {
-                PublisherDTO publisherDTO = new PublisherDTO();
-                publisherDTO.Name = publisher.Name;
-                dTO.publisher = publisherDTO;
-            }
-
-
-            foreach (var author in book.authors)
-            {
-                AuthorDTO authorDTO = new AuthorDTO();
-                authorDTO.Firstname = author.Firstname;
-                authorDTO.Lastname = author.Lastname;
-                authorDTO.details = author.AuthorContact; //not working why ?
-                dTO.authors.Add(authorDTO);
-            }
-
-            return dTO;
+            return null;
         }
 
         public List<BookDTO> GetBooks()
@@ -208,7 +216,11 @@ namespace WebApplication2.Utils
                     AuthorDTO authorDTO = new AuthorDTO();
                     authorDTO.Firstname = author.Firstname;
                     authorDTO.Lastname = author.Lastname;
-                    authorDTO.details = author.AuthorContact; //not working why ?
+                    foreach(var detail in _bookContext.AuthorContact)
+                    {
+                        if (detail.AuthorId == author.Id)
+                            authorDTO.details = detail;
+                    }
                     dTO.authors.Add(authorDTO);
                 }
 
