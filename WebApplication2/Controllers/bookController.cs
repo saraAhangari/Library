@@ -28,8 +28,7 @@ namespace WebApplication2.Controllers
             var book = _bookData.GetBook(id);
 
             if (book != null)
-            {
-                
+            {      
                 return Ok(book);
             }
 
@@ -85,11 +84,11 @@ namespace WebApplication2.Controllers
         public IActionResult DeleteBook(int id)
         {
             var book = _bookData.GetBook(id);
-            if (book != null)
-            {
-                _bookData.DeleteBook(book);
-                //return Ok(book)
-            }
+            //if (book != null)
+            //{
+            //    _bookData.DeleteBook(book);
+            //    //return Ok(book)
+            //}
 
             return NotFound($"The book with id: {id} was not found !");
         }
@@ -98,11 +97,11 @@ namespace WebApplication2.Controllers
         public IActionResult UpdateDetails(BookUpdateDTO book)
         {
             var currentBook = _bookData.GetBook(book.Id);
-            if (currentBook != null)
-            {
-                book.Id = currentBook.Id;
-                _bookData.UpdateBook(book);
-            }
+            //if (currentBook != null)
+            //{
+            //    book.Id = currentBook.Id;
+            //    _bookData.UpdateBook(book);
+            //}
             return Ok(book);
         }
     }
