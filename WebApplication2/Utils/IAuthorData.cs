@@ -7,9 +7,9 @@ namespace WebApplication2.Utils
     public interface IAuthorData
     {
         void AddAuthor(AuthorDTO authorDTO);
-        List<Author> GetAuthors();
-        Author GetAuthor(int id);
+        List<AuthorDTO> GetAuthors();
+        AuthorDTO GetAuthor(int id);
         Author GetAuthorByName(string Lastname);
-        List<Book> GetBooks(Author author);
+        List<BookDTO> GetBooks(string author);
     }
 }

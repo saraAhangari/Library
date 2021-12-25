@@ -56,8 +56,8 @@ namespace WebApplication2.Controllers
             return NotFound($"The author with name: {name} was not found !");
         }
 
-        [HttpGet("{id:int}/authorBooks")]
-        public IActionResult GetBooks(Author authorName)
+        [HttpGet("{authorName}/authorBooks")]
+        public IActionResult GetBooks(string authorName)
         {
             var author = _authorData.GetBooks(authorName);
             if (author != null)
