@@ -5,7 +5,7 @@ namespace WebApplication2.Utils
     public interface IBookDetails
     {
         void AddDetails(BookDetailsDTO detailsDTO);
-        void UpdateDetails(BookDetailsDTO detailsDTO);
+        void UpdateDetails(BookDetailsDTO detailsDTO, int id);
 
     }
 }

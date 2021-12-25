@@ -22,5 +22,12 @@ namespace WebApplication2.Controllers
             return Created(HttpContext.Request.Scheme + "://" +
                 HttpContext.Request.Host + HttpContext.Request.Path + "/" + dto.bookID, dto);
         }
+
+        [HttpPut("{id:int}")]
+        public IActionResult UpdateDetails(BookDetailsDTO detailsDTO, int id)
+        {
+            _detailsData.UpdateDetails(detailsDTO, id);
+            return Ok(detailsDTO);
+        }
     }
 }

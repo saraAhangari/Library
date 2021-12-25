@@ -2,6 +2,7 @@
 using WebApplication2.ModelsDTO;
 using WebApplication2.Utils;
 
+
 namespace WebApplication2.Services
 {
     public class BookDetailsData : IBookDetails
@@ -29,16 +30,15 @@ namespace WebApplication2.Services
             {
                 if (publisher.Name.Equals(detailsDTO.publisher))
                 {
-                    details.publisherID = publisher.publisherID;
+                    pub = publisher;
                     pubfound = true;
                     break;
                 }
             }
-            if (!pubfound)
-            {
+            if (pubfound)
                 details.publisherID = pub.publisherID;
+            else
                 _detailsContext.Publishers.Add(pub);
-            }
 
 
             Category cat = new Category();
@@ -48,16 +48,20 @@ namespace WebApplication2.Services
             {
                 if (category.Name.Equals(detailsDTO.category))
                 {
-                    details.categoryID = category.Id;
+                    cat = category;
                     catFound = true;
                     break;
                 }
             }
-            if (!catFound)
+            if (catFound)
+                details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
+            else
             {
-                details.categoryID = cat.Id;
                 _detailsContext.Category.Add(cat);
+                _detailsContext.SaveChanges();
+                details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
             }
+
 
             foreach (var book in _detailsContext.BookDetails)
             {
@@ -75,9 +79,57 @@ namespace WebApplication2.Services
             }
         }
 
-        public void UpdateDetails(BookDetailsDTO detailsDTO)
+        public void UpdateDetails(BookDetailsDTO details, int id)
         {
-            throw new System.NotImplementedException();
+            using (var ct = new LibraryContext())
+            {
+                var currentDetails = _detailsContext.BookDetails.Find(id);
+                if (currentDetails != null)
+                {
+                    currentDetails.price = details.price;
+                    currentDetails.bookID = details.bookID;
+                    currentDetails.fileId = id;
+
+                    Category bookCategory = new Category();
+                    bookCategory.Name = details.category;
+                    foreach (var category in _detailsContext.Category)
+                    {
+                        if (category.Name.Equals(details.category))
+                        {
+                            currentDetails.categoryID = category.Id;
+                            catFound = true;
+                            break;
+                        }
+                    }
+                    if (!catFound)
+                    {
+                        currentDetails.categoryID = bookCategory.Id;
+                        _detailsContext.Category.Add(bookCategory);
+                    }
+
+
+                    Publisher bookPublisher = new Publisher();
+                    bookPublisher.Name = details.publisher;
+                    foreach (var publisher in _detailsContext.Publishers)
+                    {
+                        if (publisher.Name.Equals(details.publisher))
+                        {
+                            currentDetails.publisherID = publisher.publisherID;
+                            pubfound = true;
+                            break;
+                        }
+                    }
+                    if (!pubfound)
+                    {
+                        currentDetails.publisherID = bookPublisher.publisherID;
+                        _detailsContext.Publishers.Add(bookPublisher);
+                    }
+
+                }
+                ct.BookDetails.Update(currentDetails);
+                ct.SaveChanges();
+
+            }
         }
     }
 }
