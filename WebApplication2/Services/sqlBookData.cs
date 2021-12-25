@@ -21,7 +21,6 @@ namespace WebApplication2.Utils
             Book book = new Book();
             book.title = dto.title;
 
-
             Publisher publisher = new Publisher();
             publisher.Name = dto.publisher.Name;
             publisher.book.Add(book);
@@ -164,6 +163,7 @@ namespace WebApplication2.Utils
             if (book != null)
             {
                 BookDTO dTO = new BookDTO();
+                dTO.Id = book.Id;
                 dTO.title = book.title;
 
                 List<Publisher> publisher = _bookContext.Publishers.Where(p => p.book.Contains(book))
@@ -205,6 +205,7 @@ namespace WebApplication2.Utils
             foreach (var book in books)
             {
                 BookDTO dTO = new BookDTO();
+                dTO.Id = book.Id;
                 dTO.title = book.title;
 
                 List<Publisher> publisher = _bookContext.Publishers.Where(p => p.book.Contains(book))
