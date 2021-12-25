@@ -110,9 +110,10 @@ namespace WebApplication2.Services
                         }
                     }
                     if (!catFound)
-                    {
-                        currentDetails.categoryID = bookCategory.Id;
+                    { 
                         _detailsContext.Category.Add(bookCategory);
+                        _detailsContext.SaveChanges();
+                        currentDetails.categoryID = bookCategory.Id;
                     }
 
 
@@ -129,8 +130,9 @@ namespace WebApplication2.Services
                     }
                     if (!pubfound)
                     {
-                        currentDetails.publisherID = bookPublisher.publisherID;
                         _detailsContext.Publishers.Add(bookPublisher);
+                        _detailsContext.SaveChanges();
+                        currentDetails.publisherID = bookPublisher.publisherID;
                     }
                     ct.BookDetails.Update(currentDetails);
                     ct.SaveChanges();
