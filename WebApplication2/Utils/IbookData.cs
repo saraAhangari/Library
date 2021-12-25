@@ -6,13 +6,11 @@ namespace WebApplication2.Utils
 {
     public interface IBookData
     {
-        List<Book> GetBooks();
-        Book GetBook(int id);
-        Book GetBookByTitle(string title);
-        //List<Book> GetBookByAuthor(Author author);
-        List<Book> GetBookByPublisher(Publisher publisher);
+        BookDTO GetBook(int id);
+        BookDTO GetBookByTitle(string title);
+        List<BookDTO> GetBooks();
         void AddBook(BookDTO book);
-        Book UpdateBook(Book book);
-        void DeleteBook(Book book);
+        void UpdateBook(BookDTO book, int id);
+        void DeleteBook(int id);
     }
 }

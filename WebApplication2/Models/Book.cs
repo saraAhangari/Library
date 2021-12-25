@@ -10,8 +10,8 @@ namespace WebApplication2.Models
         [Key]
         public int Id { get; set; }
         public string title { get; set; }
-        public ICollection<Publisher> publisher { get; set; } // one to many
-        public ICollection<Author> authors { get; set; } // many to many
+        public ICollection<Publisher> publisher { get; set; } 
+        public ICollection<Author> authors { get; set; } 
 
         public Book()
         {

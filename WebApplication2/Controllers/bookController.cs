@@ -69,13 +69,13 @@ namespace WebApplication2.Controllers
             return NotFound($"The book with id: {id} was not found !");
         }
 
-        [HttpPut()]
-        public IActionResult UpdateDetails(BookDTO book)
+        [HttpPut]
+        public IActionResult UpdateDetails(BookDTO book , int id)
         {
-            var currentBook = _bookData.GetBook(book.Id);
+            var currentBook = _bookData.GetBook(id);
             if (currentBook != null)
             {
-                _bookData.UpdateBook(book);
+                _bookData.UpdateBook(book , id);
             }
             return Ok(book);
         }

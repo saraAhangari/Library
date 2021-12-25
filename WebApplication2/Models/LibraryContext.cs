@@ -6,9 +6,6 @@ namespace WebApplication2.Models
 {
     public class LibraryContext : DbContext
     {
-        //public BookContext(DbContextOptions options) : base(options)
-        //{
-        //}
         public LibraryContext() : base()
         {
         }

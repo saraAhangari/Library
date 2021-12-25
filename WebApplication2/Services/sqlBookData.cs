@@ -66,22 +66,29 @@ namespace WebApplication2.Utils
             _bookContext.SaveChanges();
         }
 
-        public void UpdateBook(BookDTO book)
+        public void UpdateBook(BookDTO book, int id)
         {
             using (var ct = new LibraryContext())
             {
-                Book currentBook = _bookContext.Books.SingleOrDefault(b => b.Id == book.Id);
+                var currentBook = ct.Books.SingleOrDefault(b => b.Id == id);
                 if (currentBook != null)
                 {
                     currentBook.Id = book.Id;
                     currentBook.title = book.title;
 
-                    Publisher publisher = new Publisher();
-                    publisher.Name = book.publisher.Name;
-                    currentBook.publisher.Add(publisher);
+                    var publisher = ct.Publishers.SingleOrDefault(p => p.Name.Equals(book.publisher.Name));
+                    ct.Publishers.Remove(publisher);
+                    ct.Books.Remove(currentBook);
+                    Publisher pub = new Publisher();
+                    pub.Name = book.publisher.Name;
+                    pub.book.Add(currentBook);
+                    currentBook.publisher.Add(pub);
 
                     foreach (var author in book.authors)
                     {
+                        var bookAuthor = ct.Authors.SingleOrDefault(a => a.Lastname.Equals(author.Lastname));
+                        ct.Authors.Remove(bookAuthor);
+                        ct.Books.Remove(currentBook);
                         Author contact = new Author();
                         contact.Firstname = author.Firstname;
                         contact.Lastname = author.Lastname;
@@ -89,8 +96,8 @@ namespace WebApplication2.Utils
                         contact.Books.Add(currentBook);
                         currentBook.authors.Add(contact);
                     }
-                    _bookContext = ct;
-                    _bookContext.SaveChanges();
+                    ct.Books.Update(currentBook);
+                    ct.SaveChanges();
                 }
             }
         }
