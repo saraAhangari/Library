@@ -25,7 +25,7 @@ namespace WebApplication2.Utils
             Publisher publisher = new Publisher();
             publisher.Name = dto.publisher.Name;
             publisher.book.Add(book);
-            foreach(var pub in _bookContext.Publishers)
+            foreach (var pub in _bookContext.Publishers)
             {
                 if (pub.Name == publisher.Name)
                 {
@@ -49,7 +49,7 @@ namespace WebApplication2.Utils
                 bookauthor.Books.Add(book);
                 foreach (var author2 in _bookContext.Authors)
                 {
-                    if(author2.Firstname.Equals(bookauthor.Firstname)
+                    if (author2.Firstname.Equals(bookauthor.Firstname)
                         && author2.Lastname.Equals(bookauthor.Lastname))
                     {
                         foundAuth = true;
@@ -58,7 +58,7 @@ namespace WebApplication2.Utils
                     }
                 }
                 if (foundAuth)
-                    book.authors.Add(bookauthor);  
+                    book.authors.Add(bookauthor);
                 else
                     _bookContext.Authors.Add(bookauthor);
             }
@@ -66,29 +66,33 @@ namespace WebApplication2.Utils
             _bookContext.SaveChanges();
         }
 
-        public Book UpdateBook(BookUpdateDTO book)
+        public void UpdateBook(BookDTO book)
         {
-            var currentBook = _bookContext.Books.Find(book.Id);
-            if (currentBook != null)
+            using (var ct = new LibraryContext())
             {
-                currentBook.title = book.title;
-
-                Publisher publisher = new Publisher();
-                publisher.Name = book.publisher.Name;
-                //currentBook.publisher.Add(publisher);
-
-                foreach (var author in book.authors)
+                Book currentBook = _bookContext.Books.SingleOrDefault(b => b.Id == book.Id);
+                if (currentBook != null)
                 {
-                    Author bookauthor = new Author();
-                    bookauthor.Firstname = author.Firstname;
-                    bookauthor.Lastname= author.Lastname;
-                    bookauthor.AuthorContact= author.details;
-                    currentBook.authors.Add(bookauthor);
+                    currentBook.Id = book.Id;
+                    currentBook.title = book.title;
+
+                    Publisher publisher = new Publisher();
+                    publisher.Name = book.publisher.Name;
+                    currentBook.publisher.Add(publisher);
+
+                    foreach (var author in book.authors)
+                    {
+                        Author contact = new Author();
+                        contact.Firstname = author.Firstname;
+                        contact.Lastname = author.Lastname;
+                        contact.AuthorContact = author.details;
+                        contact.Books.Add(currentBook);
+                        currentBook.authors.Add(contact);
+                    }
+                    _bookContext = ct;
+                    _bookContext.SaveChanges();
                 }
-                _bookContext.Books.Update(currentBook);
-                _bookContext.SaveChanges();
             }
-            return currentBook;
         }
 
         public void DeleteBook(int id)
@@ -216,7 +220,7 @@ namespace WebApplication2.Utils
                     AuthorDTO authorDTO = new AuthorDTO();
                     authorDTO.Firstname = author.Firstname;
                     authorDTO.Lastname = author.Lastname;
-                    foreach(var detail in _bookContext.AuthorContact)
+                    foreach (var detail in _bookContext.AuthorContact)
                     {
                         if (detail.AuthorId == author.Id)
                             authorDTO.details = detail;
@@ -229,6 +233,6 @@ namespace WebApplication2.Utils
             return booksDTO;
         }
 
-        
+
     }
 }

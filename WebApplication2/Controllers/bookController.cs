@@ -69,15 +69,14 @@ namespace WebApplication2.Controllers
             return NotFound($"The book with id: {id} was not found !");
         }
 
-        [HttpPatch("{id:int}")]
-        public IActionResult UpdateDetails(BookUpdateDTO book)
+        [HttpPut()]
+        public IActionResult UpdateDetails(BookDTO book)
         {
             var currentBook = _bookData.GetBook(book.Id);
-            //if (currentBook != null)
-            //{
-            //    book.Id = currentBook.Id;
-            //    _bookData.UpdateBook(book);
-            //}
+            if (currentBook != null)
+            {
+                _bookData.UpdateBook(book);
+            }
             return Ok(book);
         }
     }
