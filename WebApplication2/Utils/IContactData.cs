@@ -5,6 +5,6 @@ namespace WebApplication2.Utils
 {
     public interface IContactData
     {
-        void UpdateDetails(AuthorDetailsDTO Contactdto, int id);
+        AuthorDetails UpdateDetails(AuthorDetailsDTO Contactdto, int id);
     }
 }

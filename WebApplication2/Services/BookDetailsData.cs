@@ -18,68 +18,76 @@ namespace WebApplication2.Services
         }
         public void AddDetails(BookDetailsDTO detailsDTO)
         {
-            BookDetails details = new BookDetails();
-            details.bookID = detailsDTO.bookID;
-            details.price = detailsDTO.price;
-
-
-            Publisher pub = new Publisher();
-            pub.Name = detailsDTO.publisher;
-
-            foreach (var publisher in _detailsContext.Publishers)
+            if (_detailsContext.Books.Find(detailsDTO.bookID) != null)
             {
-                if (publisher.Name.Equals(detailsDTO.publisher))
+                BookDetails details = new BookDetails();
+                details.bookID = detailsDTO.bookID;
+                details.price = detailsDTO.price;
+
+
+                Publisher pub = new Publisher();
+                pub.Name = detailsDTO.publisher;
+
+                foreach (var publisher in _detailsContext.Publishers)
                 {
-                    pub = publisher;
-                    pubfound = true;
-                    break;
+                    if (publisher.Name.Equals(detailsDTO.publisher))
+                    {
+                        pub = publisher;
+                        pubfound = true;
+                        break;
+                    }
                 }
-            }
-            if (pubfound)
-                details.publisherID = pub.publisherID;
-            else
-                _detailsContext.Publishers.Add(pub);
-
-
-            Category cat = new Category();
-            cat.Name = detailsDTO.category;
-
-            foreach (var category in _detailsContext.Category)
-            {
-                if (category.Name.Equals(detailsDTO.category))
+                if (pubfound)
+                    details.publisherID = _detailsContext.Publishers.Find(pub.publisherID).publisherID;
+                else
                 {
-                    cat = category;
-                    catFound = true;
-                    break;
+                    _detailsContext.Publishers.Add(pub);
+                    _detailsContext.SaveChanges();
+                    details.publisherID = _detailsContext.Publishers.Find(pub.publisherID).publisherID;
+
                 }
-            }
-            if (catFound)
-                details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
-            else
-            {
-                _detailsContext.Category.Add(cat);
-                _detailsContext.SaveChanges();
-                details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
-            }
 
 
-            foreach (var book in _detailsContext.BookDetails)
-            {
-                if (book.bookID == detailsDTO.bookID)
+                Category cat = new Category();
+                cat.Name = detailsDTO.category;
+
+                foreach (var category in _detailsContext.Category)
                 {
-                    bookfound = true;
-                    details = book;
-                    break;
+                    if (category.Name.Equals(detailsDTO.category))
+                    {
+                        cat = category;
+                        catFound = true;
+                        break;
+                    }
                 }
-            }
-            if (!bookfound)
-            {
-                _detailsContext.BookDetails.Add(details);
-                _detailsContext.SaveChanges();
+                if (catFound)
+                    details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
+                else
+                {
+                    _detailsContext.Category.Add(cat);
+                    _detailsContext.SaveChanges();
+                    details.categoryID = _detailsContext.Category.Find(cat.Id).Id;
+                }
+
+
+                foreach (var book in _detailsContext.BookDetails)
+                {
+                    if (book.bookID == detailsDTO.bookID)
+                    {
+                        bookfound = true;
+                        details = book;
+                        break;
+                    }
+                }
+                if (!bookfound)
+                {
+                    _detailsContext.BookDetails.Add(details);
+                    _detailsContext.SaveChanges();
+                }
             }
         }
 
-        public void UpdateDetails(BookDetailsDTO details, int id)
+        public BookDetails UpdateDetails(BookDetailsDTO details, int id)
         {
             using (var ct = new LibraryContext())
             {
@@ -124,11 +132,10 @@ namespace WebApplication2.Services
                         currentDetails.publisherID = bookPublisher.publisherID;
                         _detailsContext.Publishers.Add(bookPublisher);
                     }
-
+                    ct.BookDetails.Update(currentDetails);
+                    ct.SaveChanges();
                 }
-                ct.BookDetails.Update(currentDetails);
-                ct.SaveChanges();
-
+                return currentDetails;
             }
         }
     }

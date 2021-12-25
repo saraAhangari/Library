@@ -13,7 +13,7 @@ namespace WebApplication2.Utils
             this._contactContext = _contactContext;
         }
 
-        public void UpdateDetails(AuthorDetailsDTO contact , int id)
+        public AuthorDetails UpdateDetails(AuthorDetailsDTO contact , int id)
         {
             using(var ct = new LibraryContext())
             {
@@ -25,9 +25,10 @@ namespace WebApplication2.Utils
                     currentDetails.Number = contact.Number;
                     currentDetails.fileId = id;
                     currentDetails.AuthorId = contact.AuthorID;
+                    ct.AuthorContact.Update(currentDetails);
+                    ct.SaveChanges();
                 }
-                ct.AuthorContact.Update(currentDetails);
-                ct.SaveChanges();
+                return currentDetails;
             }
         }
     }

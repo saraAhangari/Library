@@ -19,8 +19,12 @@ namespace WebApplication2.Controllers
         [HttpPut("{id:int}")]
         public IActionResult UpdateDetails(AuthorDetailsDTO contact, int id)
         {
-            _contactdata.UpdateDetails(contact, id);
-            return Ok(contact);
+            var details = _contactdata.UpdateDetails(contact, id);
+            if (details != null)
+            {
+                return Ok(contact);
+            }
+            return NotFound($"The author with id {id} was not found !");
         }
 
     }

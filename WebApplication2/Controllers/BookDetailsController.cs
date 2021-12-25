@@ -26,8 +26,12 @@ namespace WebApplication2.Controllers
         [HttpPut("{id:int}")]
         public IActionResult UpdateDetails(BookDetailsDTO detailsDTO, int id)
         {
-            _detailsData.UpdateDetails(detailsDTO, id);
-            return Ok(detailsDTO);
+            var details = _detailsData.UpdateDetails(detailsDTO, id);
+            if (details != null)
+            {
+                return Ok(detailsDTO);
+            }
+            return NotFound($"The book with id {id} was not found !");
         }
     }
 }
