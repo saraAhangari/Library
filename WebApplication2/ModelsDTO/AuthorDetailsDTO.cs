@@ -5,6 +5,7 @@ namespace WebApplication2.ModelsDTO
 {
     public class AuthorDetailsDTO
     {
+        public int AuthorID { get; set; }
         public int age { get; set; }
         public string Number { get; set; }
         public string Address { get; set; }

@@ -16,37 +16,12 @@ namespace WebApplication2.Controllers
             this._contactdata = _cotactdata;
         }
 
-        //[HttpGet("{id:int}/getdetails")]
-        //public IActionResult GetAuthorContact(int id)
-        //{
-        //    var author = _contactdata.GetAuthorContact(id);
-
-        //    if (author != null)
-        //    {
-        //        return Ok(author);
-        //    }
-
-        //    return NotFound($"The file of author with id {id} was not found !");
-        //}
-
-        //[HttpPatch("{id:int}")]
-        //public IActionResult UpdateDetails(AuthorDetailsDTO contact, int id)
-        //{
-        //    var currentDetails = _contactdata.GetAuthorContact(id);
-        //    //if (currentDetails != null)
-        //    //{
-        //    //    contact.Id = currentDetails.Id;
-        //    //    _contactdata.UpdateDetails(contact);
-        //    //}
-        //    return Ok(contact);
-        //}
-
-        [HttpPost]
-        public IActionResult AddDetails(int id, AuthorDetailsDTO contact)
+        [HttpPut("{id:int}")]
+        public IActionResult UpdateDetails(AuthorDetailsDTO contact, int id)
         {
-            //_contactdata.AddDetails(id , contact);
-            return Created(HttpContext.Request.Scheme + "://" +
-                HttpContext.Request.Host + HttpContext.Request.Path + "/" + contact.Address, contact);
+            _contactdata.UpdateDetails(contact, id);
+            return Ok(contact);
         }
+
     }
 }
