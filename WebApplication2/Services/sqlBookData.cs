@@ -76,8 +76,12 @@ namespace WebApplication2.Utils
                     currentBook.title = book.title;
 
                     var publisher = ct.Publishers.SingleOrDefault(p => p.Name.Equals(book.publisher.Name));
-                    ct.Publishers.Remove(publisher);
-                    ct.Books.Remove(currentBook);
+                    if (publisher != null)
+                    {
+                        currentBook.publisher.Remove(publisher);
+                        ct.Publishers.Remove(publisher);
+                        ct.SaveChanges();
+                    }
                     Publisher pub = new Publisher();
                     pub.Name = book.publisher.Name;
                     pub.book.Add(currentBook);
@@ -86,8 +90,12 @@ namespace WebApplication2.Utils
                     foreach (var author in book.authors)
                     {
                         var bookAuthor = ct.Authors.SingleOrDefault(a => a.Lastname.Equals(author.Lastname));
-                        ct.Authors.Remove(bookAuthor);
-                        ct.Books.Remove(currentBook);
+                        currentBook.authors.Remove(bookAuthor);
+                        if (bookAuthor != null)
+                        {
+                            ct.Authors.Remove(bookAuthor);
+                            ct.SaveChanges();
+                        }
                         Author contact = new Author();
                         contact.Firstname = author.Firstname;
                         contact.Lastname = author.Lastname;

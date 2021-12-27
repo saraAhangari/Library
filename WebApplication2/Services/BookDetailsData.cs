@@ -1,7 +1,9 @@
 ﻿using WebApplication2.Models;
 using WebApplication2.ModelsDTO;
 using WebApplication2.Utils;
-
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace WebApplication2.Services
 {
@@ -91,7 +93,7 @@ namespace WebApplication2.Services
         {
             using (var ct = new LibraryContext())
             {
-                var currentDetails = _detailsContext.BookDetails.Find(id);
+                var currentDetails = ct.BookDetails.Find(id);
                 if (currentDetails != null)
                 {
                     currentDetails.price = details.price;
@@ -100,7 +102,7 @@ namespace WebApplication2.Services
 
                     Category bookCategory = new Category();
                     bookCategory.Name = details.category;
-                    foreach (var category in _detailsContext.Category)
+                    foreach (var category in ct.Category)
                     {
                         if (category.Name.Equals(details.category))
                         {
@@ -110,19 +112,21 @@ namespace WebApplication2.Services
                         }
                     }
                     if (!catFound)
-                    { 
-                        _detailsContext.Category.Add(bookCategory);
-                        _detailsContext.SaveChanges();
+                    {
+                        ct.Category.Add(bookCategory);
+                        ct.SaveChanges();
                         currentDetails.categoryID = bookCategory.Id;
                     }
 
 
                     Publisher bookPublisher = new Publisher();
                     bookPublisher.Name = details.publisher;
+
                     foreach (var publisher in _detailsContext.Publishers)
                     {
                         if (publisher.Name.Equals(details.publisher))
                         {
+                            bookPublisher = publisher;
                             currentDetails.publisherID = publisher.publisherID;
                             pubfound = true;
                             break;
@@ -130,8 +134,8 @@ namespace WebApplication2.Services
                     }
                     if (!pubfound)
                     {
-                        _detailsContext.Publishers.Add(bookPublisher);
-                        _detailsContext.SaveChanges();
+                        ct.Publishers.Add(bookPublisher);
+                        ct.SaveChanges();
                         currentDetails.publisherID = bookPublisher.publisherID;
                     }
                     ct.BookDetails.Update(currentDetails);
